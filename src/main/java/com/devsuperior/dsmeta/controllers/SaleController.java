@@ -1,6 +1,7 @@
 package com.devsuperior.dsmeta.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class SaleController {
 									   @RequestParam(value = "name", defaultValue = "") String name,
 									   Pageable pageable
 	) {
-		// TODO
-		return null;
+		Page<SaleMinDTO> dto = service.report(minDate, maxDate, name, pageable);
+		return ResponseEntity.ok(dto);
 	}
 
 	@GetMapping(value = "/summary")
