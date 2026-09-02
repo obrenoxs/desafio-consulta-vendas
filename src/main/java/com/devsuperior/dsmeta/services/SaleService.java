@@ -3,8 +3,10 @@ package com.devsuperior.dsmeta.services;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
+import com.devsuperior.dsmeta.dto.SaleSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,5 +45,24 @@ public class SaleService {
 		}
 
 		return repository.searchSales(minLocalDate, maxLocalDate, name, pageable);
+	}
+
+	public List<SaleSummaryDTO> summary(String minDate, String maxDate) {
+		LocalDate maxLocalDate;
+
+		if (maxDate.isBlank()) {
+			maxLocalDate = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		} else {
+			maxLocalDate = LocalDate.parse(maxDate);
+		}
+
+		LocalDate minLocalDate;
+		if (minDate.isBlank()) {
+			minLocalDate = maxLocalDate.minusYears(1L);
+		} else {
+			minLocalDate = LocalDate.parse(minDate);
+		}
+
+		return repository.searchSummary(minLocalDate, maxLocalDate);
 	}
 }
